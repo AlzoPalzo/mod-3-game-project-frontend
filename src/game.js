@@ -56,14 +56,10 @@ class GameScene extends Phaser.Scene{
     }
 
     preload() {
-        this.load.image(
-            "mapTiles",
-            "assets/tileset.png",
-            "assets/plantRepack.png"
-        );
-        this.load.tilemapTiledJSON("map", "assets/32x32map.json");
+        this.load.image("mapTiles", "assets/newTileSet.png");
+        this.load.tilemapTiledJSON("map", "assets/80x50map.json");
         this.load.image("keyhole", "assets/keyhole.png");
-        this.load.image("key", "assets/key.png");
+        this.load.image("key", "assets/key.png")
         this.load.spritesheet('character', 'assets/character.png',
             { frameWidth: 30, frameHeight: 30 }
         );
@@ -74,16 +70,33 @@ class GameScene extends Phaser.Scene{
     create() {
         
         const map = this.make.tilemap({ key: "map" })
-        const tileset = map.addTilesetImage("tileset", "mapTiles")
-        const plantTileSet = map.addTilesetImage("plantRepack", 'mapTiles')
-
-        const bottomLayer = map.createStaticLayer("Tile Layer 1", plantTileSet, 0, 0)
-        const topLayer = map.createStaticLayer("walls", tileset, 0, 0)
-
+        const tileset = map.addTilesetImage(
+          "newTileSet",
+          "mapTiles"
+        );
+        //const plantTileSet = map.addTilesetImage("plantRepack", 'mapTiles')
+            // const tileSet = map.addTilesetImage(
+            //   "tileset",
+            //   "mapTiles"
+            // );
+            // const topLayer = map.createStaticLayer(
+            //   "Tile Layer 1",
+            //   tileset,
+            //   0,
+            //   0
+            // );
+        // const walls = map.createStaticLayer("walls", tileset, 0, 0);
+        const ground = map.createStaticLayer("ground", tileset, 0, 0);
+        const path = map.createStaticLayer("path", tileset, 0, 0);
+        const walls = map.createStaticLayer("walls", tileset, 0, 0);
+        const greenery1 = map.createStaticLayer("greenery 1", tileset, 0, 0);
+        const greenery2 = map.createStaticLayer("greenery 2", tileset, 0, 0);
+    
         window.player = this.physics.add.sprite(200, 160, 'character');
         player.setScale(0.85)
 
-        topLayer.setCollisionByProperty({ collision: true })
+        walls.setCollisionByProperty({ collision: true })
+        greenery1.setCollisionByProperty({collision: true})
 
         player.setCollideWorldBounds(true);
 
@@ -95,7 +108,8 @@ class GameScene extends Phaser.Scene{
         // });
 
 
-        this.physics.add.collider(player, topLayer)
+        this.physics.add.collider(player, walls)
+        this.physics.add.collider(player, greenery1)
 
         this.anims.create({
             key: 'up',
