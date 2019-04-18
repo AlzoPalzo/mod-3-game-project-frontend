@@ -1,5 +1,85 @@
 const formDiv = document.getElementById("form-div");
 const form = document.getElementById('player-form')
+
+doorCoors = [
+  { x: 3, y: 7 },
+  { x: 10, y: 7 },
+  { x: 14, y: 3 },
+  { x: 19, y: 6 },
+  { x: 25, y: 3 },
+  { x: 28, y: 14 },
+  { x: 38, y: 10 },
+  { x: 37, y: 14 },
+  { x: 44, y: 6 },
+  { x: 44, y: 11 },
+  { x: 50, y: 3 },
+  { x: 60, y: 4 },
+  { x: 66, y: 3 },
+  { x: 17, y: 14 },
+  { x: 50, y: 10 },
+  { x: 60, y: 13 },
+  { x: 66, y: 12 },
+
+  { x: 18, y: 22 },
+  { x: 50, y: 24 },
+  { x: 66, y: 21 },
+  { x: 11, y: 25 },
+  { x: 14, y: 30 },
+  { x: 20, y: 30 },
+  { x: 28, y: 30 },
+  { x: 50, y: 28 },
+
+  { x: 54, y: 25 },
+  { x: 50, y: 32 },
+  { x: 63, y: 31 },
+  { x: 68, y: 26 },
+  { x: 6, y: 41 },
+  { x: 12, y: 39 },
+  { x: 22, y: 37 },
+  { x: 18, y: 45 },
+
+  { x: 23, y: 34 },
+  { x: 28, y: 45 },
+  { x: 38, y: 40 },
+  { x: 43, y: 32 },
+  { x: 53, y: 40 },
+  { x: 63, y: 42 },
+  { x: 67, y: 45 },
+  { x: 75, y: 40 },
+  { x: 68, y: 35 },
+];
+
+keyCoors = [
+    { x: 10,y: 3},
+    { x: 20,y: 1},
+    { x: 41,y: 10},
+    { x: 56,y: 5},
+    { x: 38,y: 3},
+    { x: 73,y: 5},
+    { x: 21,y: 11},
+    { x: 19,y: 16},
+    { x: 29,y: 20},
+    { x: 63,y: 8},
+    { x: 75,y: 16},
+    { x: 6,y: 19},
+    { x: 57,y: 24},
+    { x: 5,y: 22},
+    { x: 31,y: 29},
+    { x: 60,y: 28},
+    { x: 66,y: 30},
+    { x: 76,y: 28},
+    { x: 6,y: 32},
+    { x: 15,y: 36},
+    { x: 21,y: 32},
+    { x: 30,y: 36},
+    { x: 35,y: 35},
+    { x: 47,y: 32},
+    { x: 73,y: 37},
+    { x: 6,y: 46},
+    { x: 21,y: 42},
+    { x: 54,y: 37},
+    { x: 35,y: 41}];
+
 document.addEventListener('click', function(event){
     if (event.target.id == "submit-button")
     {
@@ -11,6 +91,7 @@ document.addEventListener('click', function(event){
 })
 
 let a = null
+let b = null
 class TestScene extends Phaser.Scene{
     constructor ()
     {
@@ -19,7 +100,7 @@ class TestScene extends Phaser.Scene{
     preload()
     {
         this.load.image("keychainmenu", "assets/keychainmenu.png");
-        this.load.image('start_button', 'assets/character.png')
+        this.load.image('start_button', 'assets/startButton.png')
     }
     create()
     {
@@ -39,6 +120,19 @@ class TestScene extends Phaser.Scene{
 
     }
 
+}
+
+function collectKey(player,  key){
+    key.disableBody(true, true)
+    player.hasKey = true
+}
+
+function unlockDoor(player, keyHole) {
+    if (player.hasKey == true)
+    {
+        keyHole.disableBody(true, true)
+        player.hasKey = false
+    }
 }
 
 class GameScene extends Phaser.Scene{
@@ -68,6 +162,7 @@ class GameScene extends Phaser.Scene{
 
 
     create() {
+        b = this
         
         const map = this.make.tilemap({ key: "map" })
         const tileset = map.addTilesetImage(
@@ -91,14 +186,65 @@ class GameScene extends Phaser.Scene{
         const walls = map.createStaticLayer("walls", tileset, 0, 0);
         const greenery1 = map.createStaticLayer("greenery 1", tileset, 0, 0);
         const greenery2 = map.createStaticLayer("greenery 2", tileset, 0, 0);
-    
+
+        // window.keyHole = this.physics.add
+        //   .sprite(112, 240, "keyhole")
+        //   .setImmovable();
+
+        // window.keyHole2 = this.physics.add
+        //   .sprite(352, 240, "keyhole")
+        //   .setImmovable();
+
+        // window.keyHole3 = this.physics.add.sprite(464, 112, 'keyhole').setImmovable()
+
+        // window.keyHole4 = this.physics.add
+        //   .sprite(624, 208, "keyhole")
+        //   .setImmovable();
+
+        // window.keyHole5 = this.physics.add.sprite(816, 112, 'keyhole').setImmovable()
         window.player = this.physics.add.sprite(200, 160, 'character');
+
+        for (let i = 0; i < doorCoors.length; i++) {
+            let x = doorCoors[i].x * 32 +16
+            let y = doorCoors[i].y * 32 + 16
+            window[`keyHole${i}`] = this.physics.add
+              .sprite(x, y, "keyhole")
+              .setImmovable();
+
+
+              this.physics.add.collider(player, window[`keyHole${i}`], unlockDoor, null, this)    
+              
+        }
+
+        for (let i = 0; i < keyCoors.length; i++) {
+            let x = keyCoors[i].x * 32 + 16;
+            let y = keyCoors[i].y * 32 + 16;        
+            
+            window[`key${i}`] = this.physics.add.sprite(x, y, 'key')
+            this.physics.add.overlap(
+                player,
+                window[`key${i}`],
+                collectKey,
+                null,
+                this
+            );
+        }
+    
+        // window.key = this.physics.add.sprite(200, 200, 'key')
+        // this.physics.add.overlap(player, key, collectKey, null, this)
+
+        // function collectKey(player, key) {
+        //     key.disableBody(true, true)
+        // }
+
         player.setScale(0.85)
 
         walls.setCollisionByProperty({ collision: true })
         greenery1.setCollisionByProperty({collision: true})
 
         player.setCollideWorldBounds(true);
+
+        player.hasKey = false
 
         // const debugGraphics = this.add.graphics().setAlpha(0.75);
         // topLayer.renderDebug(debugGraphics, {
@@ -108,6 +254,28 @@ class GameScene extends Phaser.Scene{
         // });
 
 
+        // this.physics.add.collider(
+        //   player,
+        //   keyHole2,
+        //   unlockDoor,
+        //   null,
+        //   this
+        // );
+        // this.physics.add.collider(
+        //   player,
+        //   keyHole3,
+        //   unlockDoor,
+        //   null,
+        //   this
+        // );
+        // this.physics.add.collider(
+        //   player,
+        //   keyHole4,
+        //   unlockDoor,
+        //   null,
+        //   this
+        // );
+        // this.physics.add.collider(player, keyHole5, unlockDoor, null, this)
         this.physics.add.collider(player, walls)
         this.physics.add.collider(player, greenery1)
 
@@ -162,7 +330,7 @@ class GameScene extends Phaser.Scene{
         window.cursors = this.input.keyboard.createCursorKeys();
 
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.setZoom(5)
+        this.cameras.main.setZoom(1)
         this.cameras.main.startFollow(player)
 
     }
