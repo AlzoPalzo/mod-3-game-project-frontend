@@ -66,11 +66,11 @@
         {
          "columns":13,
          "firstgid":100,
-         "image":"plant repack.png",
+         "image":"plantRepack.png",
          "imageheight":416,
          "imagewidth":416,
          "margin":0,
-         "name":"plant repack",
+         "name":"plantRepack",
          "spacing":0,
          "tilecount":169,
          "tileheight":32,

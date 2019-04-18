@@ -1,3 +1,10 @@
-#canvas{
-    border: 1px solid black
+
+#form-div{
+    /* background-color: aqua; */
+    
+    text-align: center;
+}
+
+#player-form{
+    display: inline-block;
 }

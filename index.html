@@ -11,10 +11,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="">
         <link rel="stylesheet" href="index.css">
-        <script src="src/index.js" defer></script>
+        <script src="src/game.js" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser-arcade-physics.min.js"></script>
     </head>
     <body id="body">
+        <div id="form-div">
+            <form id="player-form">
+                <label for="player-name">Enter player name to begin: </label>
+                <input type="text" name="player-name" id="player-name" required>
+                <input type="submit" name="submit" id="submit-button" class="submit-button">
+            </form>
+        </div>
+        
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
