@@ -85,7 +85,7 @@ document.addEventListener('click', function(event){
     {
         event.preventDefault()
         form.remove(form)
-        
+
         startGame()
     }
 })
@@ -109,7 +109,7 @@ class TestScene extends Phaser.Scene{
 
         a = this
         this.startbutton.on('pointerover', function(event){
-            
+
             a.scene.start('GameScene')
         })
 
@@ -163,7 +163,7 @@ class GameScene extends Phaser.Scene{
 
     create() {
         b = this
-        
+
         const map = this.make.tilemap({ key: "map" })
         const tileset = map.addTilesetImage(
           "newTileSet",
@@ -212,14 +212,14 @@ class GameScene extends Phaser.Scene{
               .setImmovable();
 
 
-              this.physics.add.collider(player, window[`keyHole${i}`], unlockDoor, null, this)    
-              
+              this.physics.add.collider(player, window[`keyHole${i}`], unlockDoor, null, this)
+
         }
 
         for (let i = 0; i < keyCoors.length; i++) {
             let x = keyCoors[i].x * 32 + 16;
-            let y = keyCoors[i].y * 32 + 16;        
-            
+            let y = keyCoors[i].y * 32 + 16;
+
             window[`key${i}`] = this.physics.add.sprite(x, y, 'key')
             this.physics.add.overlap(
                 player,
@@ -229,7 +229,7 @@ class GameScene extends Phaser.Scene{
                 this
             );
         }
-    
+
         // window.key = this.physics.add.sprite(200, 200, 'key')
         // this.physics.add.overlap(player, key, collectKey, null, this)
 
@@ -241,7 +241,7 @@ class GameScene extends Phaser.Scene{
 
         walls.setCollisionByProperty({ collision: true })
         greenery1.setCollisionByProperty({collision: true})
-
+        greenery2.setCollisionByProperty({collision: true})
         player.setCollideWorldBounds(true);
 
         player.hasKey = false
@@ -278,6 +278,7 @@ class GameScene extends Phaser.Scene{
         // this.physics.add.collider(player, keyHole5, unlockDoor, null, this)
         this.physics.add.collider(player, walls)
         this.physics.add.collider(player, greenery1)
+        this.physics.add.collider(player, greenery2)
 
         this.anims.create({
             key: 'up',
@@ -330,11 +331,11 @@ class GameScene extends Phaser.Scene{
         window.cursors = this.input.keyboard.createCursorKeys();
 
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.setZoom(1)
+        this.cameras.main.setZoom(7)
         this.cameras.main.startFollow(player)
 
     }
-        
+
 static dir = ""
 
 
@@ -402,7 +403,7 @@ var config = {
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
 
-    scene: 
+    scene:
     [ TestScene, GameScene]
 }
 
@@ -410,5 +411,3 @@ function startGame ()
 {
     var game = new Phaser.Game(config);
 }
-
-
