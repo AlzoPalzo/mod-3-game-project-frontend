@@ -3,7 +3,7 @@ A mini top down game that lets you travel through a forest. Collect keys and ope
 
 Use your arrow keys to move the sprite around the game world. In order to pass through any doors, collect keys and use them to unlock doors. A key will only open one door. After using a key, you will need to find more keys to continue travelling through the maze until you can find the exit.
 
-![Key Chain Map](https://drive.google.com/file/d/15DO1oDHHMIBqb5amEZapQoBrxK1U6gCV/view?usp=sharing)
+![Key Chain Map](https://github.com/AlzoPalzo/mod-3-game-project-frontend/blob/master/assets/Key%20Chain%20Map.bmp)
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
